@@ -17,6 +17,23 @@ class ViewController: UIViewController {
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         isFinishedTypingNumber = true
+        guard let number = Double(displayLabel.text!) else {
+            fatalError("displayLabel.textをDouble型に変換できませんでした")
+        }
+        
+        if let calcMethod = sender.currentTitle {
+            if calcMethod == "+/-" {
+                displayLabel.text = String(number * -1)
+            }
+            
+            if calcMethod == "AC" {
+                displayLabel.text = String(0)
+            }
+            
+            if calcMethod == "%" {
+                displayLabel.text = String(number / 100)
+            }
+        }
     }
 
     
