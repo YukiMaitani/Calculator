@@ -11,44 +11,52 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
-    var isFinishedTypingNumber = true
+    private var isFinishedTypingNumber = true
+    
+    private var displayValue: Double {
+        get {
+            guard let number = Double(displayLabel.text!) else {
+                fatalError("displayLabel.textをDouble型に変換できませんでした")
+            }
+            return number
+        }
+        
+        set {
+            displayLabel.text = String(newValue)
+        }
+    }
     
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         isFinishedTypingNumber = true
-        guard let number = Double(displayLabel.text!) else {
-            fatalError("displayLabel.textをDouble型に変換できませんでした")
-        }
         
         if let calcMethod = sender.currentTitle {
             if calcMethod == "+/-" {
-                displayLabel.text = String(number * -1)
+                displayValue *= -1
             }
             
             if calcMethod == "AC" {
-                displayLabel.text = String(0)
+                displayLabel.text = "0"
             }
             
             if calcMethod == "%" {
-                displayLabel.text = String(number / 100)
+                displayValue /= 100
             }
         }
     }
 
     
     @IBAction func numButtonPressed(_ sender: UIButton) {
+        
         if let numValue = sender.currentTitle {
             if isFinishedTypingNumber == true {
                 displayLabel.text = numValue
                 isFinishedTypingNumber = false
             } else {
                 if numValue == "." {
-                    guard let currentDisplayLabel = Double(displayLabel.text!) else {
-                        fatalError("Double型への変換に失敗しました")
-                    }
                     
-                    let isInt = floor(currentDisplayLabel) == currentDisplayLabel
+                    let isInt = floor(displayValue) == displayValue
                     
                     if !isInt {
                         return
