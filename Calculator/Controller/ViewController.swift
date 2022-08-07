@@ -32,17 +32,12 @@ class ViewController: UIViewController {
         isFinishedTypingNumber = true
         
         if let calcMethod = sender.currentTitle {
-            if calcMethod == "+/-" {
-                displayValue *= -1
+            let calculator = CalculatorLogic(number: displayValue)
+            guard let result = calculator.calcButton(symbol: calcMethod) else {
+                return
             }
             
-            if calcMethod == "AC" {
-                displayLabel.text = "0"
-            }
-            
-            if calcMethod == "%" {
-                displayValue /= 100
-            }
+            displayValue = result
         }
     }
 
